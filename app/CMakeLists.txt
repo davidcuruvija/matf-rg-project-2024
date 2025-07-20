@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME} ${sources} ${headers}
         include/LampEvent.cpp
         include/LampEvent.hpp
 )
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/engine/libs/assimp/code)
 target_link_libraries(${PROJECT_NAME} PRIVATE matf-rg-engine)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")

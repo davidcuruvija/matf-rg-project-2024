@@ -4,7 +4,6 @@
 
 #ifndef LAMPEVENT_HPP
 #define LAMPEVENT_HPP
-#include "../../engine/libs/assimp/code/AssetLib/Blender/BlenderScene.h"
 
 namespace app {
 

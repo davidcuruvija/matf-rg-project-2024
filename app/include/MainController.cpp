@@ -3,10 +3,6 @@
 //
 
 #include "MainController.hpp"
-#include "../../engine/test/app/include/app/MainController.hpp"
-
-#include "../../engine/libs/glfw/include/GLFW/glfw3.h"
-
 #include <GuiController.hpp>
 #include <LampEvent.hpp>
 #include <engine/graphics/GraphicsController.hpp>
