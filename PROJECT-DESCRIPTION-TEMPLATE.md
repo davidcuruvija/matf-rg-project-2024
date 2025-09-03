@@ -2,10 +2,7 @@
 
 19/2022 - David Curuvija    
 Graveyard Simulation - tema odabrana zbog objekta razumljivog za instanciranje (tema iz grupe A).
-Nekoliko razlicitih modela, medju kojima su i lampa i lampion na kojima su implementirani trazeni kriterijumi za
-svetlost.
-P. S. Lampion je predvidjen da bude izabran za ostvarivanje Bloom efekta, ali u ovoj verziji programa to nije
-implementirano.
+Nekoliko razlicitih modela, medju kojima je i lampa na kojoj je implementiran trazeni kriterijum za osvetljenje.
 
 ## Controls
 
@@ -22,7 +19,7 @@ ESC -> Exit
 
 ## Features
 
-Models: Grave, Dog, Bird, Lamp, Lantern, Cobble floor
+Models: Grave, Dog, Gull, Lamp, Cobble floor
 
 ### Fundamental:
 
@@ -46,7 +43,7 @@ Models: Grave, Dog, Bird, Lamp, Lantern, Cobble floor
 
 ### Engine improvement:
 
-[ ] ...
+[ + ] Changed the distance of the far plane
 
 ## Models:
 

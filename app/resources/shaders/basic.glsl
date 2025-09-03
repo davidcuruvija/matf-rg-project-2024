@@ -24,12 +24,44 @@ void main()
 //#shader fragment
 #version 330 core
 
-out vec4 FragColor;
+struct PointLight {
+    vec3 position;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float linear;
+    float quadratic;
+    float shininess;
+    vec3 intensity;
+};
 
-in vec2 TexCoords;
-
+uniform PointLight point_light;
+uniform vec3 cameraPos;
 uniform sampler2D texture_diffuse1;
 
-void main() {
-    FragColor = vec4(texture(texture_diffuse1, TexCoords).rgb, 1.0);
+in vec2 TexCoords;
+in vec3 Normal;
+in vec3 FragPos;
+
+out vec4 FragColor;
+
+void main()
+{
+    vec3 texColor = texture(texture_diffuse1, TexCoords).rgb;
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(point_light.position - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 viewDir = normalize(cameraPos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), point_light.shininess);
+    float distance = length(point_light.position - FragPos);
+    float attenuation = 1.0 / (1.0 + point_light.linear*distance + point_light.quadratic*distance*distance);
+    vec3 ambient = point_light.ambient * point_light.intensity;
+    vec3 diffuse = point_light.diffuse * diff;
+    vec3 specular = point_light.specular * spec;
+    ambient *= attenuation;
+    diffuse *= attenuation;
+    specular *= attenuation;
+    vec3 result = (ambient + diffuse + specular) * texColor;
+    FragColor = vec4(result, 1.0);
 }

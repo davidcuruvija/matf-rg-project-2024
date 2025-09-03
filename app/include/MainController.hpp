@@ -11,22 +11,11 @@
 namespace app {
 
 struct PointLight {
-    glm::vec3 ambient = glm::vec3(0.7f);
-    glm::vec3 diffuse = glm::vec3(1.0f);
-    glm::vec3 specular = glm::vec3(1.0f);
+    glm::vec3 ambient = glm::vec3(0.2f);
+    glm::vec3 diffuse = glm::vec3(0.4f);
+    glm::vec3 specular = glm::vec3(0.4f);
     glm::vec3 intensity = glm::vec3(0.6f);
-    glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
-    float linear = 0.004f;
-    float quadratic = 0.0001f;
-    float shininess = 32.0f;
-};
-
-struct SpotLight {
-    glm::vec3 diffuse = glm::vec3(1.0f);
-    glm::vec3 specular = glm::vec3(1.0f);
-    float cutOff = cos(glm::radians(20.0f));
-    float outer_cutOff = cos(glm::radians(30.0f));
-
+    glm::vec3 position = glm::vec3(-7.0f, 0.0f, -9.0f);
     float linear = 0.004f;
     float quadratic = 0.0001f;
     float shininess = 32.0f;
@@ -35,6 +24,7 @@ struct SpotLight {
 class LampEvent;
 
 class MainController : public engine::core::Controller {
+
     void initialize() override;
 
     bool loop() override;
@@ -48,8 +38,6 @@ class MainController : public engine::core::Controller {
     void draw_floor();
 
     void draw_lamp();
-
-    void draw_lantern();
 
     void draw_dog();
 
@@ -70,7 +58,6 @@ class MainController : public engine::core::Controller {
 public:
     std::string_view name() const override { return "app::MainController"; }
     PointLight point_light, point_light2;
-    SpotLight spot_light, spot_light2;
     LampEvent *lamp_event_handler;
     std::vector<glm::mat4> gullMatrices;
     std::vector<glm::mat4> graveMatrices;

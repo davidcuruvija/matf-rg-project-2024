@@ -9,14 +9,15 @@ add_executable(${PROJECT_NAME} ${sources} ${headers}
         src/GraveyardSimulation.cpp
         src/GraveyardSimulation.cpp
         include/GraveyardSimulation.hpp
-        include/MainController.cpp
+        src/MainController.cpp
         include/MainController.hpp
-        include/GuiController.cpp
+        src/GuiController.cpp
         include/GuiController.hpp
-        include/LampEvent.cpp
+        src/LampEvent.cpp
         include/LampEvent.hpp
-        include/LampEvent.cpp
+        src/LampEvent.cpp
         include/LampEvent.hpp
+        src/MainController.cpp
 )
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/engine/libs/assimp/code)
 target_link_libraries(${PROJECT_NAME} PRIVATE matf-rg-engine)
