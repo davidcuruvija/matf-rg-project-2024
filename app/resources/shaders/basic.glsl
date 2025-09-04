@@ -28,14 +28,25 @@ struct PointLight {
     vec3 position;
     vec3 ambient;
     vec3 diffuse;
-    vec3 specular;
+    vec3 intensity;
     float linear;
     float quadratic;
-    float shininess;
-    vec3 intensity;
+};
+
+struct SpotLight {
+    vec3 position;
+    vec3 direction;
+    vec3 ambient;
+    vec3 diffuse;
+    float constant;
+    float linear;
+    float quadratic;
+    float cutOff;
+    float outerCutOff;
 };
 
 uniform PointLight point_light;
+uniform SpotLight spot_light;
 uniform vec3 cameraPos;
 uniform sampler2D texture_diffuse1;
 
@@ -51,17 +62,20 @@ void main()
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(point_light.position - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 viewDir = normalize(cameraPos - FragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), point_light.shininess);
     float distance = length(point_light.position - FragPos);
     float attenuation = 1.0 / (1.0 + point_light.linear*distance + point_light.quadratic*distance*distance);
-    vec3 ambient = point_light.ambient * point_light.intensity;
-    vec3 diffuse = point_light.diffuse * diff;
-    vec3 specular = point_light.specular * spec;
-    ambient *= attenuation;
-    diffuse *= attenuation;
-    specular *= attenuation;
-    vec3 result = (ambient + diffuse + specular) * texColor;
+    vec3 ambient = point_light.ambient * point_light.intensity * attenuation;
+    vec3 diffuse = point_light.diffuse * diff * attenuation;
+    vec3 pointResult = (ambient + diffuse) * texColor;
+
+    vec3 spotDir = normalize(spot_light.position - FragPos);
+    float theta = dot(normalize(-spotDir), normalize(spot_light.direction));
+    float epsilon = spot_light.cutOff - spot_light.outerCutOff;
+    float intensity = clamp((theta - spot_light.outerCutOff)/epsilon, 0.0, 1.0);
+    float spotDistance = length(spot_light.position - FragPos);
+    float spotAttenuation = 1.0 / (spot_light.constant + spot_light.linear * spotDistance + spot_light.quadratic * spotDistance * spotDistance);
+    vec3 spotAmbient = spot_light.ambient * texColor * spotAttenuation * intensity * 2.0;
+    vec3 spotDiffuse = spot_light.diffuse * max(dot(norm, spotDir), 0.0) * texColor * spotAttenuation * intensity * 2.0;
+    vec3 result = pointResult + spotAmbient + spotDiffuse;
     FragColor = vec4(result, 1.0);
 }

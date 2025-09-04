@@ -88,10 +88,24 @@ void MainController::draw_floor() {
 
     shader->set_vec3("point_light.position", point_light.position);
     shader->set_vec3("point_light.ambient", point_light.ambient);
-    shader->set_vec3("point_light.diffuse", point_light.intensity);
+    shader->set_vec3("point_light.diffuse", point_light.diffuse);
     shader->set_vec3("point_light.specular", point_light.specular);
     shader->set_float("point_light.linear", point_light.linear);
     shader->set_float("point_light.quadratic", point_light.quadratic);
+
+    shader->set_vec3("spot_light.position", graphics->camera()->Position);
+    shader->set_vec3("spot_light.direction", graphics->camera()->Front);
+
+    shader->set_vec3("spot_light.ambient", spot_light.ambient);
+    shader->set_vec3("spot_light.diffuse", spot_light.diffuse);
+    shader->set_vec3("spot_light.specular", spot_light.specular);
+
+    shader->set_float("spot_light.constant", spot_light.constant);
+    shader->set_float("spot_light.linear", spot_light.linear);
+    shader->set_float("spot_light.quadratic", spot_light.quadratic);
+
+    shader->set_float("spot_light.cutOff", spot_light.cutOff);
+    shader->set_float("spot_light.outerCutOff", spot_light.outerCutOff);
 
     shader->set_vec3("cameraPos", graphics->camera()->Position);
 
@@ -114,8 +128,22 @@ void MainController::draw_lamp() {
     model = glm::translate(model, glm::vec3(-20.0f, -10.0f, 17.0f));
     model = glm::scale(model, glm::vec3(3.0f));
 
+    shader->set_vec3("spot_light.position", graphics->camera()->Position);
+    shader->set_vec3("spot_light.direction", graphics->camera()->Front);
+
+    shader->set_vec3("spot_light.ambient", spot_light.ambient);
+    shader->set_vec3("spot_light.diffuse", spot_light.diffuse);
+    shader->set_vec3("spot_light.specular", spot_light.specular);
+
+    shader->set_float("spot_light.constant", spot_light.constant);
+    shader->set_float("spot_light.linear", spot_light.linear);
+    shader->set_float("spot_light.quadratic", spot_light.quadratic);
+
+    shader->set_float("spot_light.cutOff", spot_light.cutOff);
+    shader->set_float("spot_light.outerCutOff", spot_light.outerCutOff);
+
     shader->set_mat4("model", model);
-    shader->set_vec3("lightIntensity", point_light.intensity);
+    shader->set_vec3("lightIntensity", point_light.diffuse);
     shader->set_float("lower", 15.0f);
     shader->set_float("upper", 20.8f);
     shader->set_float("margin", 0.4f);
@@ -145,6 +173,21 @@ void MainController::draw_dog() {
     shader->set_vec3("point_light.specular", glm::vec3(0.5f, 0.5f, 0.5f));
     shader->set_float("point_light.linear", point_light.linear);
     shader->set_float("point_light.quadratic", point_light.quadratic);
+
+    shader->set_vec3("spot_light.position", graphics->camera()->Position);
+    shader->set_vec3("spot_light.direction", graphics->camera()->Front);
+
+    shader->set_vec3("spot_light.ambient", spot_light.ambient);
+    shader->set_vec3("spot_light.diffuse", spot_light.diffuse);
+    shader->set_vec3("spot_light.specular", spot_light.specular);
+
+    shader->set_float("spot_light.constant", spot_light.constant);
+    shader->set_float("spot_light.linear", spot_light.linear);
+    shader->set_float("spot_light.quadratic", spot_light.quadratic);
+
+    shader->set_float("spot_light.cutOff", spot_light.cutOff);
+    shader->set_float("spot_light.outerCutOff", spot_light.outerCutOff);
+
     shader->set_vec3("cameraPos", graphics->camera()->Position);
 
     dog->draw(shader);
@@ -247,6 +290,21 @@ void MainController::draw_graves() {
     shader->set_float("point_light.linear", point_light.linear);
     shader->set_float("point_light.quadratic", point_light.quadratic);
     shader->set_float("point_light.shininess", point_light.shininess);
+
+    shader->set_vec3("spot_light.position", graphics->camera()->Position);
+    shader->set_vec3("spot_light.direction", graphics->camera()->Front);
+
+    shader->set_vec3("spot_light.ambient", spot_light.ambient);
+    shader->set_vec3("spot_light.diffuse", spot_light.diffuse);
+    shader->set_vec3("spot_light.specular", spot_light.specular);
+
+    shader->set_float("spot_light.constant", spot_light.constant);
+    shader->set_float("spot_light.linear", spot_light.linear);
+    shader->set_float("spot_light.quadratic", spot_light.quadratic);
+
+    shader->set_float("spot_light.cutOff", spot_light.cutOff);
+    shader->set_float("spot_light.outerCutOff", spot_light.outerCutOff);
+
     shader->set_vec3("cameraPos", graphics->camera()->Position);
 
     grave->draw_instanced(shader, graveMatrices.size());

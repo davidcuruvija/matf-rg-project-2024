@@ -2,7 +2,8 @@
 
 19/2022 - David Curuvija    
 Graveyard Simulation - tema odabrana zbog objekta razumljivog za instanciranje (tema iz grupe A).
-Nekoliko razlicitih modela, medju kojima je i lampa na kojoj je implementiran trazeni kriterijum za osvetljenje.
+Nekoliko razlicitih modela, medju kojima je i lampa koja je izvor Point svetla. Implemenirano je i Spot svetlo iz
+pozicije kamere.
 
 ## Controls
 
