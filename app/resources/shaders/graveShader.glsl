@@ -1,0 +1,88 @@
+//#shader vertex
+#version 330 core
+layout(location = 0) in vec3 aPos;
+layout(location = 1) in vec3 aNormal;
+layout(location = 2) in vec2 aTexCoords;
+
+layout(location = 3) in mat4 iModel;
+
+out vec3 FragPos;
+out vec3 Normal;
+out vec2 TexCoords;
+
+uniform mat4 view;
+uniform mat4 projection;
+
+void main() {
+    vec4 worldPos = iModel * vec4(aPos, 1.0);
+    FragPos = worldPos.xyz;
+    Normal  = mat3(transpose(inverse(iModel))) * aNormal;
+    TexCoords = aTexCoords;
+    gl_Position = projection * view * worldPos;
+}
+//#shader fragment
+#version 330 core
+struct PointLight {
+    vec3 position;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float linear;
+    float quadratic;
+    float shininess;
+    vec3 intensity;
+};
+
+struct SpotLight {
+    vec3 position;
+    vec3 direction;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float constant;
+    float linear;
+    float quadratic;
+    float cutOff;
+    float outerCutOff;
+};
+
+uniform PointLight point_light;
+uniform SpotLight spot_light;
+uniform vec3 cameraPos;
+uniform sampler2D texture_diffuse1;
+
+in vec3 FragPos;
+in vec3 Normal;
+in vec2 TexCoords;
+
+out vec4 FragColor;
+
+void main() {
+    vec3 texColor = texture(texture_diffuse1, TexCoords).rgb;
+    vec3 norm = normalize(Normal);
+    vec3 viewDir = normalize(cameraPos - FragPos);
+    vec3 lightDir = normalize(point_light.position - FragPos);
+    float distance = length(point_light.position - FragPos);
+    float attenuation = 1.0 / (1.0 + point_light.linear * distance + point_light.quadratic * distance * distance);
+    vec3 ambient = point_light.ambient * texColor;
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = point_light.diffuse * diff * texColor * attenuation;
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), point_light.shininess);
+    vec3 specular = point_light.specular * spec * attenuation;
+    vec3 result = ambient + diffuse + specular;
+
+    vec3 spotDir = normalize(spot_light.position - FragPos);
+    float theta = dot(normalize(-spotDir), normalize(spot_light.direction));
+    float epsilon = spot_light.cutOff - spot_light.outerCutOff;
+    float intensity = clamp((theta - spot_light.outerCutOff)/epsilon, 0.0, 1.0);
+    float spotDistance = length(spot_light.position - FragPos);
+    float spotAttenuation = 1.0 / (spot_light.constant + spot_light.linear * spotDistance + spot_light.quadratic * spotDistance * spotDistance);
+    vec3 spotAmbient = spot_light.ambient * texColor * spotAttenuation * intensity;
+    vec3 spotDiffuse = spot_light.diffuse * max(dot(norm, spotDir), 0.0) * texColor * spotAttenuation * intensity;
+    vec3 spotReflectDir = reflect(-spotDir, norm);
+    float spotSpec = pow(max(dot(viewDir, spotReflectDir), 0.0), point_light.shininess);
+    vec3 spotSpecular = spot_light.specular * spotSpec * spotAttenuation * intensity;
+    result += spotAmbient + spotDiffuse + spotSpecular;
+    FragColor = vec4(result, 1.0);
+}
