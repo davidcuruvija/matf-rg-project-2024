@@ -26,7 +26,9 @@ Models: Grave, Dog, Gull, Lamp, Cobble floor
 
 [ + ] Model with lighting
 [ + ] Two types of lighting with customizable colors and movement through GUI or ACTIONS
-[ + ] {ACTION_X} --- AFTER_M_SECONDS---Triggers---> {EVENT_A} ---> AFTER_N_SECONDS---Triggers---> {EVENT_B}
+[ + ] {Key B is pressed} --- AFTER_2_SECONDS---Triggers---> {Light color changes from white/transparent to green} --->
+AFTER_2_SECONDS---Triggers---> {Light color changes from green to blue} ---> AFTER_3_SECONDS ---Triggers---> {Light
+color changes back to white/transparent}
 
 ### Group A:
 
